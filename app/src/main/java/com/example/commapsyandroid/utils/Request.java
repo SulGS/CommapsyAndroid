@@ -1,4 +1,4 @@
-package com.example.commapsyandroid.activities;
+package com.example.commapsyandroid.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
