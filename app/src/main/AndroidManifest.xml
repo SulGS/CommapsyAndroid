@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CommapsyAndroid"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ActivateActivity"></activity>
+        <activity android:name=".activities.ResetPasswordActivity"></activity>
+        <activity android:name=".activities.ActivateActivity" />
         <activity android:name=".activities.RegisterActivity" />
         <activity
             android:name=".activities.PlatformActivity"

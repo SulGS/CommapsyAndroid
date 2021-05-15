@@ -49,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("user",stringUser);
                 startActivity(intent);
                 break;
+            case R.id.passLink:
+                intent = new Intent(getApplicationContext(),ResetPasswordActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 

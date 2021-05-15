@@ -103,7 +103,6 @@ public class User {
             return user;
         }catch(Exception ex)
         {
-            ex.printStackTrace();
             return null;
         }
 
