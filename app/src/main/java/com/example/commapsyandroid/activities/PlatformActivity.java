@@ -23,11 +23,25 @@ import androidx.appcompat.widget.Toolbar;
 public class PlatformActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private User user;
+    private String userJson;
+
+    public String getActiveUser()
+    {
+        return userJson;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        User user = User.jsonToUser(Utils.stringToJson(getIntent().getStringExtra("user")));
+        if(getIntent().hasExtra("user")) {
+            userJson = getIntent().getStringExtra("user");
+        }else
+        {
+            userJson = savedInstanceState.getString("user");
+        }
+        user = User.jsonToUser(Utils.stringToJson(userJson));
+        System.out.println(userJson);
         setContentView(R.layout.activity_platform);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

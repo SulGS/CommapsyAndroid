@@ -18,6 +18,8 @@ public class Place {
 
     private String Category;
 
+    private String bytesPhoto;
+
     public static double toRad(double d)
     {
         return (Math.PI / 180) * d;
@@ -91,7 +93,7 @@ public class Place {
             place.setPhoto(json.getString("photo"));
             place.setDescription(json.getString("description"));
             place.setCategory(json.getString("category"));
-
+            place.setBytesPhoto(json.getString("bytesPhoto"));
 
             return place;
         }catch(Exception ex)
@@ -102,4 +104,11 @@ public class Place {
 
     }
 
+    public String getBytesPhoto() {
+        return bytesPhoto;
+    }
+
+    public void setBytesPhoto(String bytesPhoto) {
+        this.bytesPhoto = bytesPhoto;
+    }
 }
