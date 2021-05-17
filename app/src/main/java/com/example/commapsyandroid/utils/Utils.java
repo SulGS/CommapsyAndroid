@@ -1,5 +1,6 @@
 package com.example.commapsyandroid.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,13 +8,21 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.navigation.NavDeepLinkBuilder;
@@ -29,6 +38,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.json.Json;
@@ -36,6 +47,10 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 public class Utils {
+
+    private static boolean SERVICE_STATUS = false;
+    private static LocationManager locationManager;
+    private static LocationListener ll;
 
     public static void restartApp(AppCompatActivity act)
     {
@@ -56,6 +71,102 @@ public class Utils {
             NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public static void configService(Activity aca)
+    {
+        locationManager = (LocationManager) aca.getSystemService(Context.LOCATION_SERVICE);
+        ll = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                findShortestPlace(location,aca);
+            }
+        };
+    }
+
+    public static boolean getStatus()
+    {
+        return SERVICE_STATUS;
+    }
+
+    public static boolean changeStatus(Activity aca)
+    {
+        SERVICE_STATUS = !SERVICE_STATUS;
+
+        if(SERVICE_STATUS)
+        {
+            if (ActivityCompat.checkSelfPermission(aca, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(aca, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestGPSPermissions(aca);
+                if (ActivityCompat.checkSelfPermission(aca, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(aca, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    SERVICE_STATUS = !SERVICE_STATUS;
+                    return SERVICE_STATUS;
+                }
+            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 120000, 0, ll);
+        }else
+        {
+            locationManager.removeUpdates(ll);
+        }
+
+        return SERVICE_STATUS;
+    }
+
+    private static void requestGPSPermissions(Activity aca)
+    {
+        ActivityCompat.requestPermissions(aca,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},1);
+    }
+
+    public static void findShortestPlace(Location locationGPS,Activity aca) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Map<String,String> parameters = new HashMap<String,String>();
+                parameters.put("Latitude",locationGPS.getLatitude()+"");
+                parameters.put("Longitude",locationGPS.getLongitude()+"");
+                try {
+                    Log.d("Result","a");
+                    String result = Request.requestData(Request.URLConexion + "/Place/returnShortestPlace", parameters);
+                    Log.d("Result","b");
+                    Place place = Place.jsonToPlace(Utils.stringToJson(result));
+
+                    Log.d("Result",result);
+
+
+                    if(place!=null)
+                    {
+                        aca.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.showNotification(result,aca);
+                            }
+                        });
+                    }else
+                    {
+                        aca.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                    }
+
+                }catch (Exception ex)
+                {
+                    aca.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(aca.getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    ex.printStackTrace();
+
+                }
+
+
+            }
+        }).start();
+
     }
 
     public static void showNotification(String stringPlace,Activity activity)

@@ -44,8 +44,6 @@ public class ServiceFragment extends Fragment {
 
 
     private Switch serviceSwitch;
-    private LocationManager locationManager;
-    private LocationListener ll;
 
     public ServiceFragment() {
         // Required empty public constructor
@@ -61,15 +59,10 @@ public class ServiceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        ll = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                findShortestPlace(location);
-            }
-        };
-
     }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,26 +72,33 @@ public class ServiceFragment extends Fragment {
 
         serviceSwitch = (Switch) view.findViewById(R.id.switchService);
 
+        if(Utils.getStatus())
+        {
+            serviceSwitch.setText("Activado");
+            serviceSwitch.setChecked(true);
+        }else
+        {
+            serviceSwitch.setText("Desactivado");
+            serviceSwitch.setChecked(false);
+        }
+
+
+
         Utils.createNotificationChannel(getActivity(),"ShortestPlace");
+
+        Utils.configService(getActivity());
 
         serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if(Utils.changeStatus(getActivity()))
                 {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        requestGPSPermissions();
-                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            serviceSwitch.setChecked(false);
-                            return;
-                        }
-                    }
                     serviceSwitch.setText("Activado");
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 120000, 0, ll);
+                    serviceSwitch.setChecked(true);
                 }else
                 {
                     serviceSwitch.setText("Desactivado");
-                    locationManager.removeUpdates(ll);
+                    serviceSwitch.setChecked(false);
                 }
 
 
@@ -109,65 +109,9 @@ public class ServiceFragment extends Fragment {
         return view;
     }
 
-    public void requestGPSPermissions()
-    {
-        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},1);
-    }
-
-    public void findShortestPlace(Location locationGPS) {
 
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Map<String,String> parameters = new HashMap<String,String>();
-                parameters.put("Latitude",locationGPS.getLatitude()+"");
-                parameters.put("Longitude",locationGPS.getLongitude()+"");
-                try {
-                    Log.d("Result","a");
-                    String result = Request.requestData(Request.URLConexion + "/Place/returnShortestPlace", parameters);
-                    Log.d("Result","b");
-                    Place place = Place.jsonToPlace(Utils.stringToJson(result));
-
-                    Log.d("Result",result);
-
-
-                    if(place!=null)
-                    {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Utils.showNotification(result,getActivity());
-                            }
-                        });
-                    }else
-                    {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                    }
-
-                }catch (Exception ex)
-                {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    ex.printStackTrace();
-
-                }
-
-
-            }
-        }).start();
-
-    }
 
 
 }
