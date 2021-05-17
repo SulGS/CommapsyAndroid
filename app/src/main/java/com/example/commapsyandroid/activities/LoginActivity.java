@@ -3,6 +3,7 @@ package com.example.commapsyandroid.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -12,6 +13,7 @@ import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
@@ -33,6 +35,17 @@ public class LoginActivity extends AppCompatActivity {
         mail = (TextInputLayout) findViewById(R.id.mailLayout);
         pass = (TextInputLayout) findViewById(R.id.passLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
+        SharedPreferences sp = getSharedPreferences("localData",MODE_PRIVATE);
+
+        if(sp.contains("user"))
+        {
+            User user = User.jsonToUser(Utils.stringToJson(sp.getString("user","")));
+            mail.getEditText().setText(user.getMail());
+            pass.getEditText().setText(sp.getString("password",""));
+            login((findViewById(R.id.login)));
+        }
+
+
     }
 
     public void link(View v)
@@ -91,6 +104,10 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     Toast.makeText(getApplicationContext(),"Login correcto",Toast.LENGTH_LONG).show();
+                                    SharedPreferences.Editor sp = getSharedPreferences("localData",MODE_PRIVATE).edit();
+                                    sp.putString("user",stringUser);
+                                    sp.putString("password",pass.getEditText().getText().toString());
+                                    sp.commit();
                                     link(v);
                                 }
                             });

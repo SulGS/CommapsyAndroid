@@ -47,4 +47,13 @@
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus scelerisque hendrerit vestibulum. Maecenas non viverra sapien. Quisque et porttitor turpis, vitae fermentum quam. Mauris ut cursus urna, nec ullamcorper ante. Nullam quis scelerisque erat, vel euismod odio. Vivamus fringilla massa ut arcu lobortis, sit amet fermentum dui commodo. Nullam rutrum velit id magna cursus rutrum. Donec faucibus malesuada turpis ut elementum. In dictum, nulla vel vehicula accumsan, nibh elit egestas sem, eu convallis erat augue eu felis. Praesent cursus tellus sed fermentum aliquet. In hac habitasse platea dictumst."
         />
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/placeMap"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/placeDescription"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

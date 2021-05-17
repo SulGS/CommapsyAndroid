@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -65,11 +67,15 @@ public class Utils {
         }
         System.out.println(user);
         Place place = Place.jsonToPlace(Utils.stringToJson(stringPlace));
-        Bundle bundle = new Bundle();
-        bundle.putString("place",stringPlace);
-        bundle.putString("user",user);
+        SharedPreferences sp = activity.getSharedPreferences("localData", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("place",stringPlace);
+        edit.putString("user",user);
+        edit.commit();
+
         PendingIntent pi = new NavDeepLinkBuilder(activity.getApplication().getApplicationContext()).setComponentName(PlatformActivity.class).
-        setGraph(R.navigation.mobile_navigation).setDestination(R.id.placeFragment).setArguments(bundle).createPendingIntent();
+        setGraph(R.navigation.mobile_navigation).setDestination(R.id.placeFragment).createPendingIntent();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, "ShortestPlace")
                 .setSmallIcon(R.drawable.commapsy)
@@ -77,7 +83,7 @@ public class Utils {
                 .setContentText(place.getDescription())
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(place.getDescription()))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pi);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pi).setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
 
@@ -104,9 +110,10 @@ public class Utils {
     public static Bitmap urlToBitmap(String decode)
     {
         try {
-            return BitmapFactory.decodeStream(new URL(decode).openStream());
+            return BitmapFactory.decodeStream(new URL("http://192.168.1.192/" + decode).openStream());
         }catch(Exception ex)
         {
+            ex.printStackTrace();
             return null;
         }
     }

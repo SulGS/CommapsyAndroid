@@ -139,7 +139,6 @@ public class ServiceFragment extends Fragment {
                             @Override
                             public void run() {
                                 Utils.showNotification(result,getActivity());
-                                Toast.makeText(getActivity().getApplicationContext(),place.getName(),Toast.LENGTH_LONG).show();
                             }
                         });
                     }else
