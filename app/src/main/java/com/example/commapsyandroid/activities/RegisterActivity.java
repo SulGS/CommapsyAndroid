@@ -13,6 +13,7 @@ import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout pass;
     private TextInputLayout genderL;
     private ProgressBar loading;
+    private MaterialButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         pass = (TextInputLayout) findViewById(R.id.passLayout);
         genderL = (TextInputLayout) findViewById(R.id.genderLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
-
+        button = (MaterialButton) findViewById(R.id.register);
     }
 
 
@@ -55,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         surname.setError(null);
         pass.setError(null);
         genderL.setError(null);
+        button.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 Toast.makeText(getApplicationContext(),"Registro correcto",Toast.LENGTH_LONG).show();
                                 loading.setVisibility(View.INVISIBLE);
                                 Intent intent = new Intent(getApplicationContext(),ActivateActivity.class);
@@ -93,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 mail.setError("Error al registrarse");
                                 name.setError("Error al registrarse");
                                 surname.setError("Error al registrarse");
@@ -108,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 mail.setError(null);
                                 name.setError(null);
                                 surname.setError(null);
@@ -122,6 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            button.setEnabled(true);
                             Toast.makeText(getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
                             loading.setVisibility(View.INVISIBLE);
                         }

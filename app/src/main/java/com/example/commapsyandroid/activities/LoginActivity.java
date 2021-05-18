@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout mail;
     private TextInputLayout pass;
+    private MaterialButton button;
     private String stringUser;
     private ProgressBar loading;
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         mail = (TextInputLayout) findViewById(R.id.mailLayout);
         pass = (TextInputLayout) findViewById(R.id.passLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
+        button = (MaterialButton) findViewById(R.id.login);
         SharedPreferences sp = getSharedPreferences("localData",MODE_PRIVATE);
 
         if(sp.contains("user"))
@@ -76,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         loading.setVisibility(View.VISIBLE);
         mail.setError(null);
         pass.setError(null);
+        button.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -96,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 loading.setVisibility(View.INVISIBLE);
+                                button.setEnabled(true);
                             }
                         });
                         if(user.isIs_Enable())
@@ -108,11 +112,13 @@ public class LoginActivity extends AppCompatActivity {
                                     sp.putString("user",stringUser);
                                     sp.putString("password",pass.getEditText().getText().toString());
                                     sp.commit();
+                                    button.setEnabled(true);
                                     link(v);
                                 }
                             });
                         }else
                         {
+                            button.setEnabled(true);
                             Intent intent = new Intent(getApplicationContext(),ActivateActivity.class);
                             intent.putExtra("mail",parameters.get("Mail"));
                             startActivity(intent);
@@ -125,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                                 mail.setError("Creedenciales incorrectas");
                                 pass.setError("Creedenciales incorrectas");
                                 loading.setVisibility(View.INVISIBLE);
+                                button.setEnabled(true);
                             }
                         });
 
@@ -136,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void run() {
                                 mail.setError(null);
                                 pass.setError(null);
+                                button.setEnabled(true);
                             }
                         });
                     }
@@ -147,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             Toast.makeText(getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
                             loading.setVisibility(View.INVISIBLE);
+                            button.setEnabled(true);
                         }
                     });
                     ex.printStackTrace();

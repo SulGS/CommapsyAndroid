@@ -7,11 +7,21 @@
     <fragment
         android:id="@+id/serviceFragment"
         android:name="com.example.commapsyandroid.activities.ui.ServiceFragment"
-        android:label="Servicio"
+        android:label="Service"
         tools:layout="@layout/fragment_service" />
     <fragment
         android:id="@+id/placeFragment"
         android:name="com.example.commapsyandroid.activities.ui.PlaceFragment"
-        android:label="fragment_place"
+        android:label="Place"
         tools:layout="@layout/fragment_place" />
+    <fragment
+        android:id="@+id/explorerFragment"
+        android:name="com.example.commapsyandroid.activities.ui.ExplorerFragment"
+        android:label="Explorer"
+        tools:layout="@layout/fragment_explorer" />
+    <fragment
+        android:id="@+id/explorerResultsFragment"
+        android:name="com.example.commapsyandroid.activities.ui.ExplorerResultsFragment"
+        android:label="Results"
+        tools:layout="@layout/fragment_explorer_results" />
 </navigation>

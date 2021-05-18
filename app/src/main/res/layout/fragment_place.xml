@@ -56,4 +56,19 @@
         app:layout_constraintTop_toBottomOf="@id/placeDescription"
         />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Comments"
+        android:backgroundTint="@color/secondary"
+        app:layout_constraintTop_toBottomOf="@id/placeMap"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

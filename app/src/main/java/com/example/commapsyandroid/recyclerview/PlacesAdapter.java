@@ -1,44 +1,82 @@
 package com.example.commapsyandroid.recyclerview;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.Place;
+import com.example.commapsyandroid.utils.Utils;
 
 import java.util.ArrayList;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolderPlaces>{
 
     ArrayList<Place> places;
+    Activity activity;
 
+    public PlacesAdapter(Activity act, ArrayList<Place> p)
+    {
+        activity = act;
+        places = p;
+    }
 
-
+    
     @NonNull
     @Override
     public ViewHolderPlaces onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.place_adapter,parent,false);
+
+        return new ViewHolderPlaces(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderPlaces holder, int position) {
 
+        holder.placeName.setText(places.get(position).getName());
+        holder.placeCategory.setText(places.get(position).getCategory());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = Utils.urlToBitmap(places.get(position).getPhoto());
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.placeImage.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }).start();
+
+
+        holder.position = position;
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return places.size();
     }
 
     public class ViewHolderPlaces extends RecyclerView.ViewHolder {
 
+        ImageView placeImage;
+        TextView placeName, placeCategory;
+        int position;
+
         public ViewHolderPlaces(@NonNull View itemView) {
             super(itemView);
-
-
-
+            placeImage = ((ImageView)itemView.findViewById(R.id.placeImage));
+            placeName = ((TextView)itemView.findViewById(R.id.placeName));
+            placeCategory = ((TextView)itemView.findViewById(R.id.placeCategory));
         }
     }
 }

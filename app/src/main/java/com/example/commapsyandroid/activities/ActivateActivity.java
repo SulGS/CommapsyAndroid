@@ -12,6 +12,7 @@ import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class ActivateActivity extends AppCompatActivity {
     private String mail;
     private TextInputLayout key;
     private ProgressBar loading;
+    private MaterialButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ActivateActivity extends AppCompatActivity {
         key = (TextInputLayout) findViewById(R.id.keyLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
         mail = getIntent().getStringExtra("mail");
+        button = (MaterialButton) findViewById(R.id.send);
     }
 
 
@@ -40,6 +43,7 @@ public class ActivateActivity extends AppCompatActivity {
         AppCompatActivity AppCom = this;
         loading.setVisibility(View.VISIBLE);
         key.setError(null);
+        button.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,6 +66,7 @@ public class ActivateActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 Toast.makeText(getApplicationContext(),"Cuenta activada",Toast.LENGTH_LONG).show();
                                 loading.setVisibility(View.INVISIBLE);
                                 Utils.restartApp(AppCom);
@@ -74,6 +79,7 @@ public class ActivateActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 key.setError("Clave incorrecta");
                                 loading.setVisibility(View.INVISIBLE);
                             }
@@ -85,6 +91,7 @@ public class ActivateActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                button.setEnabled(true);
                                 key.setError(null);
                             }
                         });
@@ -95,6 +102,7 @@ public class ActivateActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            button.setEnabled(true);
                             Toast.makeText(getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
                             loading.setVisibility(View.INVISIBLE);
                         }

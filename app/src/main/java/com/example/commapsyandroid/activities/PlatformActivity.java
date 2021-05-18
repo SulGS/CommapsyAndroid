@@ -1,13 +1,18 @@
 package com.example.commapsyandroid.activities;
 
+
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.commapsyandroid.R;
+import com.example.commapsyandroid.activities.ui.ExplorerFragment;
+import com.example.commapsyandroid.activities.ui.ServiceFragment;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +21,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -30,10 +37,18 @@ public class PlatformActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
     private String userJson;
+    private static NavController nc;
 
     public String getActiveUser()
     {
         return userJson;
+    }
+
+
+
+    public static NavController getNavigationController()
+    {
+        return nc;
     }
 
     @Override
@@ -66,16 +81,33 @@ public class PlatformActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         ((TextView)navigationView.getHeaderView(0).findViewById(R.id.email)).setText(user.getMail());
         ((TextView)navigationView.getHeaderView(0).findViewById(R.id.nameSurname)).setText(user.getName() + " " + user.getSurname());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap b = Utils.urlToBitmap(user.getProfile_Photo());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ImageView)findViewById(R.id.userLogo)).setImageBitmap(b);
+                    }
+                });
+            }
+        }).start();
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.serviceFragment, R.id.explorador, R.id.miperfil,R.id.cerrarsesion)
+                R.id.servicio, R.id.explorador, R.id.miperfil,R.id.cerrarsesion)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+
+        nc = navController;
 
         AppCompatActivity aca = this;
 
@@ -84,6 +116,14 @@ public class PlatformActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId())
                 {
+                    case R.id.servicio:
+                        navController.navigate(R.id.serviceFragment);
+                        drawer.closeDrawers();
+                        break;
+                    case R.id.explorador:
+                        navController.navigate(R.id.explorerFragment);
+                        drawer.closeDrawers();
+                        break;
                     case R.id.cerrarsesion:
 
                         SharedPreferences.Editor sp = getSharedPreferences("localData",MODE_PRIVATE).edit();

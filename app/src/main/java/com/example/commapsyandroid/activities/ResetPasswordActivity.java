@@ -12,6 +12,7 @@ import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private TextInputLayout key;
     private TextInputLayout pass;
     private ProgressBar loading;
+    private MaterialButton buttonKey;
+    private MaterialButton buttonSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         pass = (TextInputLayout) findViewById(R.id.passLayout);
         key = (TextInputLayout) findViewById(R.id.keyLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
+        buttonKey = (MaterialButton) findViewById(R.id.requestKey);
+        buttonSend = (MaterialButton) findViewById(R.id.changePass);
     }
 
 
@@ -44,6 +49,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mail.setError(null);
         pass.setError(null);
         key.setError(null);
+        buttonKey.setEnabled(false);
+        buttonSend.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -57,6 +64,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 loading.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getApplicationContext(),"Codigo enviado al correo",Toast.LENGTH_LONG).show();
                             }
@@ -66,6 +75,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 mail.setError("No existe el correo");
                                 loading.setVisibility(View.INVISIBLE);
                             }
@@ -77,6 +88,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 mail.setError(null);
                             }
                         });
@@ -87,6 +100,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            buttonKey.setEnabled(true);
+                            buttonSend.setEnabled(true);
                             Toast.makeText(getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
                             loading.setVisibility(View.INVISIBLE);
                         }
@@ -107,6 +122,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mail.setError(null);
         pass.setError(null);
         key.setError(null);
+        buttonKey.setEnabled(false);
+        buttonSend.setEnabled(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -125,6 +142,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 loading.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getApplicationContext(),"Contraseña cambiada",Toast.LENGTH_LONG).show();
                                 Utils.restartApp(AppCom);
@@ -135,6 +154,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 key.setError("Clave incorrecta");
                                 loading.setVisibility(View.INVISIBLE);
                             }
@@ -146,6 +167,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                buttonKey.setEnabled(true);
+                                buttonSend.setEnabled(true);
                                 key.setError(null);
                             }
                         });
@@ -156,6 +179,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            buttonKey.setEnabled(true);
+                            buttonSend.setEnabled(true);
                             Toast.makeText(getApplicationContext(),"Error al realizar la operacion",Toast.LENGTH_LONG).show();
                             loading.setVisibility(View.INVISIBLE);
                         }
