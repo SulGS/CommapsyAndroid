@@ -1,6 +1,8 @@
 package com.example.commapsyandroid.recyclerview;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.commapsyandroid.R;
+import com.example.commapsyandroid.activities.PlatformActivity;
 import com.example.commapsyandroid.entities.Place;
 import com.example.commapsyandroid.utils.Utils;
 
@@ -66,7 +69,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         return places.size();
     }
 
-    public class ViewHolderPlaces extends RecyclerView.ViewHolder {
+    public class ViewHolderPlaces extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView placeImage;
         TextView placeName, placeCategory;
@@ -77,6 +80,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             placeImage = ((ImageView)itemView.findViewById(R.id.placeImage));
             placeName = ((TextView)itemView.findViewById(R.id.placeName));
             placeCategory = ((TextView)itemView.findViewById(R.id.placeCategory));
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            SharedPreferences.Editor sp = activity.getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+            sp.putString("place",places.get(position).toJsonString());
+            sp.commit();
+            PlatformActivity.getNavigationController().navigate(R.id.placeFragment);
         }
     }
 }

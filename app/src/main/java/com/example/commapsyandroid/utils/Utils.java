@@ -204,6 +204,7 @@ public class Utils {
     public static JsonObject stringToJson(String jsonToParse)
     {
         try {
+            System.out.println(jsonToParse);
             JsonReader jReader = Json.createReader(new StringReader(jsonToParse));
 
             JsonObject jsonValues = jReader.readObject();

@@ -7,19 +7,34 @@
     android:background="@color/primary"
     tools:context=".activities.ui.PlaceFragment">
 
-    <TextView
-        android:id="@+id/placeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        android:text="Nombre de ejemplo"
+   <HorizontalScrollView
+       android:id="@+id/scroller"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       >
 
-        />
+       <TextView
+           android:id="@+id/placeName"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
+           android:textColor="@color/white"
+           android:singleLine="true"
+           android:ellipsize="marquee"
+           android:marqueeRepeatLimit ="marquee_forever"
+           android:focusable="true"
+           android:focusableInTouchMode="true"
+           android:scrollHorizontally="true"
+           android:textSize="30dp"
+           android:text="Nombre de ejemplo"
+
+           />
+
+
+   </HorizontalScrollView>
 
     <ImageView
         android:id="@+id/placePhoto"
@@ -27,7 +42,7 @@
         android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/placeName"
+        app:layout_constraintTop_toBottomOf="@id/scroller"
         android:layout_marginTop="10dp"
         android:src="@drawable/commapsy"
         android:scaleType="fitXY"

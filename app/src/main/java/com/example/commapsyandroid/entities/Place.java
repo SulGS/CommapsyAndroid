@@ -95,6 +95,31 @@ public class Place {
             return place;
         }catch(Exception ex)
         {
+            ex.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+    public String toJsonString()
+    {
+        try {
+            String jsonReturn = "{\n";
+
+            jsonReturn += "\"id\":" + getID() + ",";
+            jsonReturn += "\"latitude\":" + getLatitude() + ",";
+            jsonReturn += "\"longitude\":" + getLongitude() + ",";
+            jsonReturn += "\"name\":\"" + getName() + "\",";
+            jsonReturn += "\"photo\":\"" + getPhoto() + "\",";
+            jsonReturn += "\"description\":\"" + getDescription() + "\",";
+            jsonReturn += "\"category\":\"" + getCategory()+ "\"}";
+
+
+
+            return jsonReturn;
+        }catch(Exception ex)
+        {
             return null;
         }
 

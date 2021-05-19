@@ -64,6 +64,7 @@ public class ExplorerFragment extends Fragment {
             public void run() {
                 Map<String,String> parameters = new HashMap<String,String>();
                 parameters.put("Name",filter.getEditText().getText().toString());
+                parameters.put("Page",0+"");
                 try {
                     String response = Request.requestData(Request.URLConexion + "/Place/returnPlacesByName", parameters);
 
@@ -80,13 +81,12 @@ public class ExplorerFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getActivity(),"Login correcto",Toast.LENGTH_LONG).show();
                                 SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
                                 sp.putString("stringJsonResponse",response);
+                                sp.putString("nameParameter",parameters.get("Name"));
                                 sp.commit();
                                 button.setEnabled(true);
                                 PlatformActivity.getNavigationController().navigate(R.id.explorerResultsFragment);
-
                             }
                         });
                     }else
