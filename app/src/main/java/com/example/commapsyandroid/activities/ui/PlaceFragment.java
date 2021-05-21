@@ -73,7 +73,7 @@ public class PlaceFragment extends Fragment {
             }
         }).start();
 
-        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+
 
         map = ((MapView)view.findViewById(R.id.placeMap));
 

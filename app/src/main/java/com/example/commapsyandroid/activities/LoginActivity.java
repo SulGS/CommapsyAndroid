@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.commapsyandroid.BuildConfig;
 import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
         setContentView(R.layout.activity_login);
         mail = (TextInputLayout) findViewById(R.id.mailLayout);
         pass = (TextInputLayout) findViewById(R.id.passLayout);

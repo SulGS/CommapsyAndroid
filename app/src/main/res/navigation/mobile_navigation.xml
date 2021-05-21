@@ -24,4 +24,9 @@
         android:name="com.example.commapsyandroid.activities.ui.ExplorerResultsFragment"
         android:label="Results"
         tools:layout="@layout/fragment_explorer_results" />
+    <fragment
+        android:id="@+id/placeRequestFragment"
+        android:name="com.example.commapsyandroid.activities.ui.PlaceRequestFragment"
+        android:label="Place_Request"
+        tools:layout="@layout/fragment_place_request" />
 </navigation>

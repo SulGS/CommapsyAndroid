@@ -69,7 +69,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         return places.size();
     }
 
-    public class ViewHolderPlaces extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolderPlaces extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView placeImage;
         TextView placeName, placeCategory;
@@ -81,6 +81,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             placeName = ((TextView)itemView.findViewById(R.id.placeName));
             placeCategory = ((TextView)itemView.findViewById(R.id.placeCategory));
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -89,6 +90,15 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             sp.putString("place",places.get(position).toJsonString());
             sp.commit();
             PlatformActivity.getNavigationController().navigate(R.id.placeFragment);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            SharedPreferences.Editor sp = activity.getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+            sp.putString("place",places.get(position).toJsonString());
+            sp.commit();
+            PlatformActivity.getNavigationController().navigate(R.id.placeRequestFragment);
+            return false;
         }
     }
 }

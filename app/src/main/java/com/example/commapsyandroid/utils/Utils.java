@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.example.commapsyandroid.activities.PlatformActivity;
 import com.example.commapsyandroid.entities.Place;
 import com.example.commapsyandroid.entities.User;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -51,6 +53,37 @@ public class Utils {
     private static boolean SERVICE_STATUS = false;
     private static LocationManager locationManager;
     private static LocationListener ll;
+
+
+    public String toBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+
+    public static void pickImage(Activity aca,boolean isPlace)
+    {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);
+        intent.putExtra("outputX", 256);
+        intent.putExtra("outputY", 256);
+        if(isPlace)
+        {
+            intent.putExtra("aspectX", 16);
+            intent.putExtra("aspectY", 9);
+        }else
+        {
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+        }
+        intent.putExtra("return-data", true);
+        aca.startActivityForResult(intent, 1);
+    }
 
     public static void restartApp(AppCompatActivity act)
     {

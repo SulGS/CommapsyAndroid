@@ -1,19 +1,24 @@
 package com.example.commapsyandroid.activities;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.activities.ui.ExplorerFragment;
 import com.example.commapsyandroid.activities.ui.ServiceFragment;
 import com.example.commapsyandroid.entities.User;
+import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,19 +37,36 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.json.JsonObject;
+
 public class PlatformActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
-    private String userJson;
+    private static String userJson;
     private static NavController nc;
 
-    public String getActiveUser()
+    private static String name;
+
+
+    public static String getActiveUser()
     {
         return userJson;
     }
 
 
+    public static void setSendName(String n)
+    {
+        name = n;
+    }
 
     public static NavController getNavigationController()
     {
@@ -54,6 +76,7 @@ public class PlatformActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         if(getIntent().hasExtra("user"))
         {
@@ -141,7 +164,10 @@ public class PlatformActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
