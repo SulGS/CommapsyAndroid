@@ -29,4 +29,9 @@
         android:name="com.example.commapsyandroid.activities.ui.PlaceRequestFragment"
         android:label="Place_Request"
         tools:layout="@layout/fragment_place_request" />
+    <fragment
+        android:id="@+id/placeCommentsFragment"
+        android:name="com.example.commapsyandroid.activities.ui.PlaceCommentsFragment"
+        android:label="Place Comments"
+        tools:layout="@layout/fragment_place_comments" />
 </navigation>

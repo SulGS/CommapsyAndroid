@@ -89,6 +89,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             SharedPreferences.Editor sp = activity.getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
             sp.putString("place",places.get(position).toJsonString());
             sp.commit();
+            PlatformActivity.getNavigationController().popBackStack();
             PlatformActivity.getNavigationController().navigate(R.id.placeFragment);
         }
 
@@ -97,6 +98,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             SharedPreferences.Editor sp = activity.getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
             sp.putString("place",places.get(position).toJsonString());
             sp.commit();
+            PlatformActivity.getNavigationController().popBackStack();
             PlatformActivity.getNavigationController().navigate(R.id.placeRequestFragment);
             return false;
         }

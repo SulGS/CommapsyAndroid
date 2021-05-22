@@ -17,10 +17,9 @@ import android.widget.Toast;
 
 import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.activities.PlatformActivity;
-import com.example.commapsyandroid.entities.Place;
-import com.example.commapsyandroid.recyclerview.PlacesAdapter;
+import com.example.commapsyandroid.entities.Opinion;
+import com.example.commapsyandroid.recyclerview.CommentsAdapter;
 import com.example.commapsyandroid.utils.Request;
-import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.StringReader;
@@ -30,18 +29,17 @@ import java.util.Map;
 
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-public class ExplorerResultsFragment extends Fragment {
+public class PlaceCommentsFragment extends Fragment {
 
     private RecyclerView list;
-    private ArrayList<Place> places;
+    private ArrayList<Opinion> comments;
     private int page;
     private MaterialButton button;
-    private String nameParameter;
+    private String placeParameter;
 
-    public ExplorerResultsFragment() {
+    public PlaceCommentsFragment() {
         // Required empty public constructor
     }
 
@@ -68,13 +66,13 @@ public class ExplorerResultsFragment extends Fragment {
 
         for (int i = 0;i<jsonArray.size();i++)
         {
-            places.add(Place.jsonToPlace(jsonArray.getJsonObject(i)));
+            comments.add(Opinion.jsonToOpinion(jsonArray.getJsonObject(i)));
         }
 
 
 
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        PlacesAdapter adaptador = new PlacesAdapter(getActivity(),places);
+        CommentsAdapter adaptador = new CommentsAdapter(getActivity(),comments);
 
         list.setAdapter(adaptador);
     }
@@ -84,8 +82,8 @@ public class ExplorerResultsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         page = 1;
-        places = new ArrayList<Place>();
-        nameParameter = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).getString("nameParameter","");
+        comments = new ArrayList<Opinion>();
+        placeParameter = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).getString("placeParameter","");
         View view = inflater.inflate(R.layout.fragment_explorer_results, container, false);
 
         button = ((MaterialButton)view.findViewById(R.id.more));
@@ -112,11 +110,11 @@ public class ExplorerResultsFragment extends Fragment {
             @Override
             public void run() {
                 Map<String,String> parameters = new HashMap<String,String>();
-                parameters.put("Name",nameParameter);
+                parameters.put("PlaceID", placeParameter);
                 parameters.put("Page",page+"");
                 page++;
                 try {
-                    String response = Request.requestData(Request.URLConexion + "/Place/returnPlacesByName", parameters);
+                    String response = Request.requestData(Request.URLConexion + "/Opinion/returnOpinions", parameters);
 
                     if(!response.equals(""))
                     {
