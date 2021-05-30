@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/serviceFragment">
+    <fragment
+        android:id="@+id/serviceFragment"
+        android:name="com.example.commapsyandroid.activities.ui.ServiceFragment"
+        android:label="Service"
+        tools:layout="@layout/fragment_service" />
+    <fragment
+        android:id="@+id/placeFragment"
+        android:name="com.example.commapsyandroid.activities.ui.PlaceFragment"
+        android:label="Place"
+        tools:layout="@layout/fragment_place" />
+    <fragment
+        android:id="@+id/explorerFragment"
+        android:name="com.example.commapsyandroid.activities.ui.ExplorerFragment"
+        android:label="Explorer"
+        tools:layout="@layout/fragment_explorer" />
+    <fragment
+        android:id="@+id/explorerResultsFragment"
+        android:name="com.example.commapsyandroid.activities.ui.ExplorerResultsFragment"
+        android:label="Results"
+        tools:layout="@layout/fragment_explorer_results" />
+    <fragment
+        android:id="@+id/placeRequestFragment"
+        android:name="com.example.commapsyandroid.activities.ui.PlaceRequestFragment"
+        android:label="Place_Request"
+        tools:layout="@layout/fragment_place_request" />
+    <fragment
+        android:id="@+id/placeCommentsFragment"
+        android:name="com.example.commapsyandroid.activities.ui.PlaceCommentsFragment"
+        android:label="Place Comments"
+        tools:layout="@layout/fragment_place_comments" />
+</navigation>
