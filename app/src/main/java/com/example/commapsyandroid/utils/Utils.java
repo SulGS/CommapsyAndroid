@@ -85,7 +85,7 @@ public class Utils {
         aca.startActivityForResult(intent, 1);
     }
 
-    public static void restartApp(AppCompatActivity act)
+    public static void restartApp(Activity act)
     {
         Intent intent = new Intent(act, LoginActivity.class);
         intent.putExtra("ValorExtra", true);
@@ -176,12 +176,17 @@ public class Utils {
                         });
                     }else
                     {
-                        aca.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        if(result.equals("403"))
+                        {
+                            Utils.restartApp(aca);
+                        }else {
+                            aca.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
 
                 }catch (Exception ex)

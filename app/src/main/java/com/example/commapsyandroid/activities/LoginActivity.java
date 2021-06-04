@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             if(!user.getMail().equals("0"))
                             {
+                                Request.Token = user.get_Key();
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

@@ -121,17 +121,21 @@ public class ExplorerResultsFragment extends Fragment {
                     if(!response.equals(""))
                     {
 
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
-                                sp.putString("stringJsonResponse",response);
-                                sp.commit();
-                                button.setEnabled(true);
-                                updateList();
-                            }
-                        });
+                        if(response.equals("403"))
+                        {
+                            Utils.restartApp(getActivity());
+                        }else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+                                    sp.putString("stringJsonResponse", response);
+                                    sp.commit();
+                                    button.setEnabled(true);
+                                    updateList();
+                                }
+                            });
+                        }
                     }else
                     {
                         getActivity().runOnUiThread(new Runnable() {

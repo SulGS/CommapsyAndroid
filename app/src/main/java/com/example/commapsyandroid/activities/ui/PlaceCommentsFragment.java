@@ -20,6 +20,7 @@ import com.example.commapsyandroid.activities.PlatformActivity;
 import com.example.commapsyandroid.entities.Opinion;
 import com.example.commapsyandroid.recyclerview.CommentsAdapter;
 import com.example.commapsyandroid.utils.Request;
+import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.StringReader;
@@ -72,7 +73,7 @@ public class PlaceCommentsFragment extends Fragment {
 
 
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        CommentsAdapter adaptador = new CommentsAdapter(getActivity(),comments);
+        CommentsAdapter adaptador = new CommentsAdapter(getActivity(),comments,getActivity().getSupportFragmentManager());
 
         list.setAdapter(adaptador);
     }
@@ -119,17 +120,21 @@ public class PlaceCommentsFragment extends Fragment {
                     if(!response.equals(""))
                     {
 
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
-                                sp.putString("stringJsonResponse",response);
-                                sp.commit();
-                                button.setEnabled(true);
-                                updateList();
-                            }
-                        });
+                        if(response.equals("403"))
+                        {
+                            Utils.restartApp(getActivity());
+                        }else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+                                    sp.putString("stringJsonResponse", response);
+                                    sp.commit();
+                                    button.setEnabled(true);
+                                    updateList();
+                                }
+                            });
+                        }
                     }else
                     {
                         getActivity().runOnUiThread(new Runnable() {

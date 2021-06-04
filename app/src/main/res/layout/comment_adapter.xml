@@ -32,12 +32,24 @@
                 android:text="Category"
                 android:textSize="25dp"/>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:backgroundTint="@color/secondary"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                />
+
         </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/secondary"/>
+
+
 
 
 </LinearLayout>

@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CommapsyAndroid"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.ReportOpinionActivity"></activity>
         <activity
             android:name=".activities.ResetPasswordActivity"
             android:screenOrientation="portrait" />

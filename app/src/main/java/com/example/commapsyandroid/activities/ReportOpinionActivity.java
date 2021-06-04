@@ -5,17 +5,14 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.example.commapsyandroid.R;
-import com.example.commapsyandroid.entities.Place;
+import com.example.commapsyandroid.entities.Opinion;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
@@ -25,12 +22,18 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ContactFormActivity extends AppCompatDialogFragment {
+public class ReportOpinionActivity extends AppCompatDialogFragment {
 
-    private TextInputLayout subject;
-    private TextInputLayout body;
+    private TextInputLayout reason;
     private ProgressBar loading;
     private MaterialButton button;
+
+    private Opinion opinion;
+
+    public ReportOpinionActivity(Opinion op)
+    {
+        opinion = op;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -38,10 +41,9 @@ public class ContactFormActivity extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.activity_contact_form,null);
+        View view = inflater.inflate(R.layout.activity_report_opinion,null);
 
-        subject = (TextInputLayout) view.findViewById(R.id.subjectLayout);
-        body = (TextInputLayout) view.findViewById(R.id.bodyLayout);
+        reason = (TextInputLayout) view.findViewById(R.id.reasonLayout);
         button = (MaterialButton) view.findViewById(R.id.send);
         loading = (ProgressBar) view.findViewById(R.id.loading);
 
@@ -52,7 +54,7 @@ public class ContactFormActivity extends AppCompatDialogFragment {
             }
         });
 
-        builder.setView(view).setTitle("Contact Form");
+        builder.setView(view).setTitle("Report");
 
 
 
@@ -68,12 +70,12 @@ public class ContactFormActivity extends AppCompatDialogFragment {
             public void run() {
                 User user = User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()));
                 Map<String,String> parameters = new HashMap<String,String>();
-                parameters.put("UserMail",(User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()))).getMail());
-                parameters.put("Subject",subject.getEditText().getText().toString());
-                parameters.put("Body",body.getEditText().getText().toString().replaceAll("\n",".,."));
+                parameters.put("Mail",(User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()))).getMail());
+                parameters.put("OpinionID",opinion.getID()+"");
+                parameters.put("Comment",reason.getEditText().getText().toString().replaceAll("\n",".,."));
 
                 try {
-                    String response = Request.requestData(Request.URLConexion + "/ContactForm/register", parameters);
+                    String response = Request.requestData(Request.URLConexion + "/Report/register", parameters);
 
                     if(Boolean.parseBoolean(response))
                     {

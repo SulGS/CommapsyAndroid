@@ -12,13 +12,18 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.commapsyandroid.R;
 import com.example.commapsyandroid.activities.PlatformActivity;
+import com.example.commapsyandroid.activities.ReportOpinionActivity;
 import com.example.commapsyandroid.entities.Opinion;
 import com.example.commapsyandroid.entities.Place;
 import com.example.commapsyandroid.utils.Utils;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -26,11 +31,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     ArrayList<Opinion> comments;
     Activity activity;
+    FragmentManager fragmentManager;
 
-    public CommentsAdapter(Activity act, ArrayList<Opinion> p)
+    public CommentsAdapter(Activity act, ArrayList<Opinion> p,FragmentManager fM)
     {
         activity = act;
         comments = p;
+        fragmentManager = fM;
     }
 
 
@@ -64,6 +71,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     public class ViewHolderComments extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
+        MaterialButton button;
         TextView comment;
         RatingBar rating;
         int position;
@@ -72,6 +80,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             super(itemView);
             rating = ((RatingBar)itemView.findViewById(R.id.ratingBar));
             comment = ((TextView)itemView.findViewById(R.id.comment));
+            button = ((MaterialButton)itemView.findViewById(R.id.send));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ReportOpinionActivity roa = new ReportOpinionActivity(comments.get(position));
+                    roa.show(fragmentManager,"Comments");
+                }
+            });
         }
 
         @Override
