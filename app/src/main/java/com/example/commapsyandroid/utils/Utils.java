@@ -85,7 +85,7 @@ public class Utils {
         aca.startActivityForResult(intent, 1);
     }
 
-    public static void restartApp(AppCompatActivity act)
+    public static void restartApp(Activity act)
     {
         Intent intent = new Intent(act, LoginActivity.class);
         intent.putExtra("ValorExtra", true);
@@ -176,12 +176,17 @@ public class Utils {
                         });
                     }else
                     {
-                        aca.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        if(result.equals("403"))
+                        {
+                            Utils.restartApp(aca);
+                        }else {
+                            aca.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
 
                 }catch (Exception ex)
@@ -255,7 +260,7 @@ public class Utils {
     public static Bitmap urlToBitmap(String decode)
     {
         try {
-            return BitmapFactory.decodeStream(new URL("http://192.168.1.192/" + decode).openStream());
+            return BitmapFactory.decodeStream(new URL("http://commapsy.us.to:8082/" + decode).openStream());
         }catch(Exception ex)
         {
             ex.printStackTrace();

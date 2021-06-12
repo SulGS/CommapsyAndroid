@@ -96,8 +96,8 @@ public class PlatformActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                ContactFormActivity cfa = new ContactFormActivity();
+                cfa.show(getSupportFragmentManager(),"Contact Form");
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -122,7 +122,7 @@ public class PlatformActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.servicio, R.id.explorador, R.id.miperfil,R.id.cerrarsesion)
+                R.id.servicio, R.id.explorador,R.id.cerrarsesion)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

@@ -132,6 +132,12 @@ public class PlaceFragment extends Fragment {
                             ((MaterialButton)view.findViewById(R.id.rate)).setVisibility(View.VISIBLE);
                         }
                     });
+                }else
+                {
+                    if(response.equals("403"))
+                    {
+                        Utils.restartApp(getActivity());
+                    }
                 }
             }
         }).start();
@@ -163,25 +169,30 @@ public class PlaceFragment extends Fragment {
 
                     if(!response.equals(""))
                     {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                button.setEnabled(true);
-                            }
-                        });
+                        if(response.equals("403"))
+                        {
+                            Utils.restartApp(getActivity());
+                        }else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    button.setEnabled(true);
+                                }
+                            });
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
-                                sp.putString("stringJsonResponse",response);
-                                sp.putString("placeParameter",parameters.get("PlaceID"));
-                                sp.commit();
-                                button.setEnabled(true);
-                                System.out.println("fdsfdasdas");
-                                PlatformActivity.getNavigationController().navigate(R.id.placeCommentsFragment);
-                            }
-                        });
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+                                    sp.putString("stringJsonResponse", response);
+                                    sp.putString("placeParameter", parameters.get("PlaceID"));
+                                    sp.commit();
+                                    button.setEnabled(true);
+                                    System.out.println("fdsfdasdas");
+                                    PlatformActivity.getNavigationController().navigate(R.id.placeCommentsFragment);
+                                }
+                            });
+                        }
                     }else
                     {
                         getActivity().runOnUiThread(new Runnable() {

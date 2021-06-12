@@ -1,46 +1,38 @@
 package com.example.commapsyandroid.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.example.commapsyandroid.R;
-import com.example.commapsyandroid.entities.Place;
+import com.example.commapsyandroid.entities.Opinion;
 import com.example.commapsyandroid.entities.User;
 import com.example.commapsyandroid.utils.Request;
 import com.example.commapsyandroid.utils.Utils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.osmdroid.views.MapView;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class RatingActivity extends AppCompatDialogFragment {
+public class ReportOpinionActivity extends AppCompatDialogFragment {
 
-    private Place place;
-
-    private RatingBar rating;
-    private TextInputLayout comment;
+    private TextInputLayout reason;
     private ProgressBar loading;
     private MaterialButton button;
 
+    private Opinion opinion;
 
-    public RatingActivity (Place place)
+    public ReportOpinionActivity(Opinion op)
     {
-        this.place = place;
+        opinion = op;
     }
 
     @Override
@@ -49,10 +41,9 @@ public class RatingActivity extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.activity_rating,null);
+        View view = inflater.inflate(R.layout.activity_report_opinion,null);
 
-        rating = (RatingBar) view.findViewById(R.id.ratingBar);
-        comment = (TextInputLayout) view.findViewById(R.id.commentLayout);
+        reason = (TextInputLayout) view.findViewById(R.id.reasonLayout);
         button = (MaterialButton) view.findViewById(R.id.send);
         loading = (ProgressBar) view.findViewById(R.id.loading);
 
@@ -63,7 +54,7 @@ public class RatingActivity extends AppCompatDialogFragment {
             }
         });
 
-        builder.setView(view).setTitle("Rating");
+        builder.setView(view).setTitle("Report");
 
 
 
@@ -79,13 +70,12 @@ public class RatingActivity extends AppCompatDialogFragment {
             public void run() {
                 User user = User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()));
                 Map<String,String> parameters = new HashMap<String,String>();
-                parameters.put("UserMail",(User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()))).getMail());
-                parameters.put("PlaceID",place.getID()+"");
-                parameters.put("Rating",rating.getRating()+"");
-                parameters.put("Comment",comment.getEditText().getText().toString());
+                parameters.put("Mail",(User.jsonToUser(Utils.stringToJson(PlatformActivity.getActiveUser()))).getMail());
+                parameters.put("OpinionID",opinion.getID()+"");
+                parameters.put("Comment",reason.getEditText().getText().toString().replaceAll("\n",".,."));
 
                 try {
-                    String response = Request.requestData(Request.URLConexion + "/Opinion/register", parameters);
+                    String response = Request.requestData(Request.URLConexion + "/Report/register", parameters);
 
                     if(Boolean.parseBoolean(response))
                     {
@@ -93,13 +83,8 @@ public class RatingActivity extends AppCompatDialogFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
-                                sp.putString("stringJsonResponse",response);
-                                sp.putString("nameParameter",parameters.get("Name"));
-                                sp.commit();
                                 button.setEnabled(true);
                                 loading.setVisibility(View.INVISIBLE);
-                                PlatformActivity.getNavigationController().navigate(R.id.serviceFragment);
                                 dismiss();
                             }
                         });
@@ -109,6 +94,7 @@ public class RatingActivity extends AppCompatDialogFragment {
                         {
                             Utils.restartApp(getActivity());
                         }else {
+
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -137,6 +123,4 @@ public class RatingActivity extends AppCompatDialogFragment {
             }
         }).start();
     }
-
-
 }

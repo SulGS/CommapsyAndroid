@@ -132,15 +132,19 @@ public class PlaceRequestFragment extends Fragment {
                         });
                     }else
                     {
+                        if(response.equals("403"))
+                        {
+                            Utils.restartApp(getActivity());
+                        }else {
 
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.INVISIBLE);
-                                button.setEnabled(true);
-                            }
-                        });
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loading.setVisibility(View.INVISIBLE);
+                                    button.setEnabled(true);
+                                }
+                            });
+                        }
                     }
 
                 }catch (Exception ex)

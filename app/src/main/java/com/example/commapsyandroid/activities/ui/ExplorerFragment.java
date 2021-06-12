@@ -70,25 +70,31 @@ public class ExplorerFragment extends Fragment {
 
                     if(!response.equals(""))
                     {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.INVISIBLE);
-                                button.setEnabled(true);
-                            }
-                        });
+                        if(response.equals("403"))
+                        {
+                            Utils.restartApp(getActivity());
+                        }else {
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
-                                sp.putString("stringJsonResponse",response);
-                                sp.putString("nameParameter",parameters.get("Name"));
-                                sp.commit();
-                                button.setEnabled(true);
-                                PlatformActivity.getNavigationController().navigate(R.id.explorerResultsFragment);
-                            }
-                        });
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loading.setVisibility(View.INVISIBLE);
+                                    button.setEnabled(true);
+                                }
+                            });
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SharedPreferences.Editor sp = getActivity().getSharedPreferences("localData", Context.MODE_PRIVATE).edit();
+                                    sp.putString("stringJsonResponse", response);
+                                    sp.putString("nameParameter", parameters.get("Name"));
+                                    sp.commit();
+                                    button.setEnabled(true);
+                                    PlatformActivity.getNavigationController().navigate(R.id.explorerResultsFragment);
+                                }
+                            });
+                        }
                     }else
                     {
                         getActivity().runOnUiThread(new Runnable() {

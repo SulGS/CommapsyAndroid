@@ -28,8 +28,8 @@ import javax.json.JsonObject;
 
 public class Request {
 
-    public final static String URLConexion = "http://192.168.1.192:8080";
-
+    public final static String URLConexion = "http://commapsy.us.to:8081";
+    public static String Token = "null";
 
 
 
@@ -63,6 +63,7 @@ public class Request {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Authorization",Token);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
             connection.setDoOutput(true);
@@ -71,6 +72,11 @@ public class Request {
             int status = connection.getResponseCode();
 
             System.out.println(status);
+
+            if(status==403)
+            {
+                return "403";
+            }
 
             InputStreamReader in = new InputStreamReader(connection.getInputStream(), "UTF-8");
 

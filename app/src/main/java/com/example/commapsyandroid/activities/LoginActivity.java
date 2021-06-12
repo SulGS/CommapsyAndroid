@@ -109,23 +109,35 @@ public class LoginActivity extends AppCompatActivity {
                         });
                         if(user.isIs_Enable())
                         {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(getApplicationContext(),"Login correcto",Toast.LENGTH_LONG).show();
-                                    SharedPreferences.Editor sp = getSharedPreferences("localData",MODE_PRIVATE).edit();
-                                    sp.putString("user",stringUser);
-                                    sp.putString("password",pass.getEditText().getText().toString());
-                                    sp.commit();
-                                    button.setEnabled(true);
-                                    link(v);
-                                }
-                            });
+                            if(!user.getMail().equals("0"))
+                            {
+                                Request.Token = user.get_Key();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(),"Login correcto",Toast.LENGTH_LONG).show();
+                                        SharedPreferences.Editor sp = getSharedPreferences("localData",MODE_PRIVATE).edit();
+                                        sp.putString("user",stringUser);
+                                        sp.putString("password",pass.getEditText().getText().toString());
+                                        sp.commit();
+                                        button.setEnabled(true);
+                                        link(v);
+                                    }
+                                });
+                            }else
+                            {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getApplicationContext(),"Usuario baneado permanentemente",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
                         }else
                         {
                             button.setEnabled(true);
                             Intent intent = new Intent(getApplicationContext(),ActivateActivity.class);
-                            intent.putExtra("mail",parameters.get("Mail"));
+                            intent.putExtra("Mail",parameters.get("Mail"));
                             startActivity(intent);
                         }
                     }else
