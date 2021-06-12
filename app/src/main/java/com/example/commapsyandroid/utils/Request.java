@@ -28,7 +28,7 @@ import javax.json.JsonObject;
 
 public class Request {
 
-    public final static String URLConexion = "http://192.168.1.192:8080";
+    public final static String URLConexion = "http://commapsy.us.to:8081";
     public static String Token = "null";
 
 

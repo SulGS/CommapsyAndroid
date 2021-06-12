@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             button.setEnabled(true);
                             Intent intent = new Intent(getApplicationContext(),ActivateActivity.class);
-                            intent.putExtra("mail",parameters.get("Mail"));
+                            intent.putExtra("Mail",parameters.get("Mail"));
                             startActivity(intent);
                         }
                     }else

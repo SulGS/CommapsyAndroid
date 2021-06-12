@@ -260,7 +260,7 @@ public class Utils {
     public static Bitmap urlToBitmap(String decode)
     {
         try {
-            return BitmapFactory.decodeStream(new URL("http://192.168.1.192/" + decode).openStream());
+            return BitmapFactory.decodeStream(new URL("http://commapsy.us.to:8082/" + decode).openStream());
         }catch(Exception ex)
         {
             ex.printStackTrace();

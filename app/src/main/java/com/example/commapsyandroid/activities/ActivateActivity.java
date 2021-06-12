@@ -33,7 +33,7 @@ public class ActivateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_activate);
         key = (TextInputLayout) findViewById(R.id.keyLayout);
         loading = (ProgressBar) findViewById(R.id.loading);
-        mail = getIntent().getStringExtra("mail");
+        mail = getIntent().getStringExtra("Mail");
         button = (MaterialButton) findViewById(R.id.send);
     }
 
